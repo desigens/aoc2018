@@ -1,4 +1,4 @@
-import boxesChecksum, { counterHelper } from "./";
+import { boxesChecksum, counterHelper, commonLetters } from "./";
 
 test("helper", () => {
   expect(counterHelper("abcdef", 2)).toBe(0);
@@ -35,4 +35,18 @@ test("examples", () => {
       "ababab"
     ])
   ).toBe(12);
+});
+
+test("exmaples 2", () => {
+  expect(
+    commonLetters(
+      `abcde
+fghij
+klmno
+pqrst
+fguij
+axcye
+wvxyz`.split("\n")
+    )
+  ).toBe("fgij");
 });

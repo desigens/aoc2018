@@ -1,4 +1,4 @@
-import { fillFabricHelper, getMarkedInchesCount } from "./";
+import { fillFabricHelper, getMarkedInchesCount, findNotOverlaped } from "./";
 
 test("examples", () => {
   expect(
@@ -33,4 +33,15 @@ test("rich ids", () => {
 #4567 @ 3,1: 4x4`
     )
   ).toBe(4);
+});
+
+test("examples 2", () => {
+  expect(
+    findNotOverlaped(
+      `#1 @ 1,3: 4x4
+#2 @ 3,1: 4x4
+#3 @ 5,5: 2x2`,
+      8
+    )
+  ).toBe("3");
 });

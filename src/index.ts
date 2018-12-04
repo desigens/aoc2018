@@ -2,7 +2,7 @@ import { readFileSync, readdir, readdirSync } from "fs";
 import { resolve } from "path";
 import getFrequency from "./lib/1";
 import { boxesChecksum, commonLetters } from "./lib/2";
-import { getMarkedInchesCount } from "./lib/3";
+import { getMarkedInchesCount, findNotOverlaped } from "./lib/3";
 
 {
   const input = readFileSync(resolve(__dirname, "./data/1.txt"), "utf-8");
@@ -19,4 +19,5 @@ import { getMarkedInchesCount } from "./lib/3";
 {
   const input = readFileSync(resolve(__dirname, "./data/3.txt"), "utf-8");
   console.log("ANSWER 3-1:", getMarkedInchesCount(input, 1000));
+  console.log("ANSWER 3-2:", findNotOverlaped(input, 1000));
 }

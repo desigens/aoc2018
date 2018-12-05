@@ -153,3 +153,45 @@ export function strategy(input: string): number | undefined {
     }
   }
 }
+
+export function strategy2(input: string): number | undefined {
+  const times = fillTimes(input.split("\n").map(parseRecord));
+  const sum: { [guard: string]: Array<number> } = {};
+
+  for (let day in times) {
+    const { guard, minutes } = times[day];
+    minutes.forEach((m, index) => {
+      if (sum[guard] === undefined) {
+        sum[guard] = [];
+      }
+      if (m === "#") {
+        if (sum[guard][index]) {
+          sum[guard][index]++;
+        } else {
+          sum[guard][index] = 1;
+        }
+      } else {
+        if (!sum[guard][index]) {
+          sum[guard][index] = 0;
+        }
+      }
+    });
+  }
+
+  let max = 0;
+  let guardWithMaxOnMinute;
+  for (let guard in sum) {
+    let m = Math.max(...sum[guard]);
+    if (m > max) {
+      max = m;
+      guardWithMaxOnMinute = guard;
+    }
+  }
+
+  if (guardWithMaxOnMinute) {
+    return (
+      parseInt(guardWithMaxOnMinute.substr(1)) *
+      sum[guardWithMaxOnMinute].indexOf(max)
+    );
+  }
+}

@@ -5,7 +5,8 @@ import {
   getNextDay,
   getSleepyhead,
   getMostMinuteAsleep,
-  strategy
+  strategy,
+  strategy2
 } from "./";
 
 const input = `[1518-11-01 00:00] Guard #10 begins shift
@@ -48,6 +49,8 @@ test("examples", () => {
   expect(getMostMinuteAsleep(times, "#99")).toBe(45);
 
   expect(strategy(input)).toBe(240);
+
+  expect(strategy2(input)).toBe(4455);
 });
 
 test("helpers", () => {

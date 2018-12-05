@@ -3,7 +3,7 @@ import { resolve } from "path";
 import getFrequency from "./lib/1";
 import { boxesChecksum, commonLetters } from "./lib/2";
 import { getMarkedInchesCount, findNotOverlaped } from "./lib/3";
-import { strategy } from "./lib/4";
+import { strategy, strategy2 } from "./lib/4";
 
 {
   const input = readFileSync(resolve(__dirname, "./data/1.txt"), "utf-8");
@@ -26,4 +26,5 @@ import { strategy } from "./lib/4";
 {
   const input = readFileSync(resolve(__dirname, "./data/4.txt"), "utf-8");
   console.log("ANSWER 4-1:", strategy(input));
+  console.log("ANSWER 4-2:", strategy2(input));
 }

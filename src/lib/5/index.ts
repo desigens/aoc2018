@@ -29,3 +29,36 @@ export function resultPolimer(input: string): string {
 export function polimerLength(input: string): number {
   return resultPolimer(input).length;
 }
+
+export function gatherDiffertentUnits(input: string): Set<string> {
+  let units = new Set();
+  for (let i = 0; i < input.length; i++) {
+    units.add(input[i].toLowerCase());
+  }
+  return units;
+}
+
+export function removeUnitFromPolimer(input: string, unit: string): string {
+  let output = "";
+  for (let i = 0; i < input.length; i++) {
+    if (input[i].toLowerCase() !== unit.toLowerCase()) {
+      output += input[i];
+    }
+  }
+  return output;
+}
+
+export function polimerLengthAfterRemovingUnit(
+  input: string,
+  unit: string
+): number {
+  return polimerLength(removeUnitFromPolimer(input, unit));
+}
+
+export function shortestResultPolimer(input: string): number {
+  const lengths = new Map();
+  gatherDiffertentUnits(input).forEach(unit => {
+    lengths.set(unit, polimerLengthAfterRemovingUnit(input, unit));
+  });
+  return Math.min(...lengths.values());
+}

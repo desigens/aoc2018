@@ -4,7 +4,7 @@ import getFrequency from "./lib/1";
 import { boxesChecksum, commonLetters } from "./lib/2";
 import { getMarkedInchesCount, findNotOverlaped } from "./lib/3";
 import { strategy, strategy2 } from "./lib/4";
-import { polimerLength } from "./lib/5";
+import { polimerLength, shortestResultPolimer } from "./lib/5";
 
 {
   const input = readFileSync(resolve(__dirname, "./data/1.txt"), "utf-8");
@@ -33,4 +33,5 @@ import { polimerLength } from "./lib/5";
 {
   const input = readFileSync(resolve(__dirname, "./data/5.txt"), "utf-8");
   console.log("ANSWER 5-1:", polimerLength(input));
+  console.log("ANSWER 5-2:", shortestResultPolimer(input));
 }

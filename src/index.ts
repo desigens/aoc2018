@@ -5,7 +5,7 @@ import { boxesChecksum, commonLetters } from "./lib/2";
 import { getMarkedInchesCount, findNotOverlaped } from "./lib/3";
 import { strategy, strategy2 } from "./lib/4";
 import { polimerLength, shortestResultPolimer } from "./lib/5";
-import { getLargestFiniteArea } from "./lib/6";
+import { getLargestFiniteArea, getLargestSafeArea } from "./lib/6";
 
 {
   const input = readFileSync(resolve(__dirname, "./data/1.txt"), "utf-8");
@@ -41,4 +41,5 @@ import { getLargestFiniteArea } from "./lib/6";
 {
   const input = readFileSync(resolve(__dirname, "./data/6.txt"), "utf-8");
   console.log("ANSWER 6-1:", getLargestFiniteArea(input));
+  console.log("ANSWER 6-2:", getLargestSafeArea(input, 10000));
 }

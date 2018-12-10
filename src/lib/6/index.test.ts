@@ -1,4 +1,10 @@
-import { fillGridWithCoordinates, getClosests, getLargestFiniteArea } from "./";
+import {
+  fillGridWithCoordinates,
+  getClosests,
+  getLargestFiniteArea,
+  getSafeRegion,
+  getSum
+} from "./";
 
 test("examples", () => {
   const { grid, coordinates } = fillGridWithCoordinates(`1, 1
@@ -35,4 +41,31 @@ bbb.ffffFf`);
 5, 5
 8, 9`)
   ).toEqual(17);
+});
+
+test("examples 2", () => {
+  const { grid, coordinates, size } = getSafeRegion(
+    `1, 1
+1, 6
+8, 3
+3, 4
+5, 5
+8, 9`,
+    32
+  );
+
+  expect(getSum(coordinates, 4, 3)).toBe(30);
+
+  expect(grid.map(r => r.join("")).join("\n")).toBe(`..........
+.A........
+..........
+...###..C.
+..#D###...
+..###E#...
+.B.###....
+..........
+..........
+........F.`);
+
+  expect(size).toBe(16);
 });

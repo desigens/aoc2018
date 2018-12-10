@@ -25,6 +25,16 @@ export function getClosests(
   return closests;
 }
 
+export function getSum(coordinates: Coordinates, x: number, y: number): number {
+  let sum = 0;
+  for (let c in coordinates) {
+    let length =
+      Math.abs(coordinates[c][0] - x) + Math.abs(coordinates[c][1] - y);
+    sum += length;
+  }
+  return sum;
+}
+
 export function fillGridWithCoordinates(
   input: string
 ): { grid: Grid; coordinates: Coordinates; largestFiniteArea: number } {
@@ -90,6 +100,63 @@ export function fillGridWithCoordinates(
   };
 }
 
+export function getSafeRegion(
+  input: string,
+  distance: number
+): { grid: Grid; coordinates: Coordinates; size: number } {
+  const grid: Grid = [[]];
+  const coordinates: Coordinates = {};
+
+  let minX = Infinity;
+  let minY = Infinity;
+  let maxX = -Infinity;
+  let maxY = -Infinity;
+  input.split("\n").forEach((s, index) => {
+    const coordinateName = String.fromCharCode(index + 65);
+    const x = parseInt(s.split(",")[0]);
+    const y = parseInt(s.split(",")[1]);
+    if (x > maxX) maxX = x;
+    if (x < minX) minX = x;
+    if (y > maxY) maxY = y;
+    if (y < minY) minY = y;
+    if (grid[y] === undefined) {
+      grid[y] = [];
+    }
+    coordinates[coordinateName] = [x, y];
+    grid[y][x] = coordinateName;
+  });
+
+  let size = 0;
+  for (let y = 0; y <= maxY; y++) {
+    for (let x = 0; x <= maxX + 1; x++) {
+      if (grid[y] === undefined) {
+        grid[y] = [];
+      }
+
+      const l = getSum(coordinates, x, y);
+      if (l < distance && !grid[y][x]) {
+        grid[y][x] = "#";
+        size++;
+      } else if (l < distance && grid[y][x]) {
+        // grid[y][x] = grid[y][x];
+        size++;
+      } else if (!grid[y][x]) {
+        grid[y][x] = ".";
+      }
+    }
+  }
+
+  return {
+    grid,
+    coordinates,
+    size
+  };
+}
+
 export function getLargestFiniteArea(input: string): number {
   return fillGridWithCoordinates(input).largestFiniteArea;
+}
+
+export function getLargestSafeArea(input: string, distance: number): number {
+  return getSafeRegion(input, distance).size;
 }

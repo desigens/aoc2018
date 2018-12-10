@@ -1,7 +1,8 @@
 type Grid = Array<Array<string>>;
 type Coordinates = {
-  [name: string]: [number, number];
+  [name: string]: Coordinate;
 };
+type Coordinate = [number, number];
 
 export function getClosests(
   coordinates: Coordinates,
@@ -24,60 +25,71 @@ export function getClosests(
   return closests;
 }
 
-export function setCoorditates(
+export function fillGridWithCoordinates(
   input: string
-): { grid: Grid; coordinates: Coordinates } {
+): { grid: Grid; coordinates: Coordinates; largestFiniteArea: number } {
   const grid: Grid = [[]];
   const coordinates: Coordinates = {};
+
+  let minX = Infinity;
+  let minY = Infinity;
   let maxX = -Infinity;
   let maxY = -Infinity;
-
-  const onXs = new Map();
-  const onYs = new Map();
 
   input.split("\n").forEach((s, index) => {
     const coordinateName = String.fromCharCode(index + 65);
     const x = parseInt(s.split(",")[0]);
     const y = parseInt(s.split(",")[1]);
     if (x > maxX) maxX = x;
+    if (x < minX) minX = x;
     if (y > maxY) maxY = y;
+    if (y < minY) minY = y;
     if (grid[y] === undefined) {
       grid[y] = [];
     }
     coordinates[coordinateName] = [x, y];
     grid[y][x] = coordinateName;
   });
-  coordinates;
+
+  const hasInfiniteArea = new Set(Object.keys(coordinates));
+  const areasOfCoordinates: { [key: string]: number } = {};
 
   for (let y = 0; y <= maxY; y++) {
     for (let x = 0; x <= maxX + 1; x++) {
       if (grid[y] === undefined) {
         grid[y] = [];
       }
-      grid[y][x] = grid[y][x] || ".";
+      if (grid[y][x]) {
+        areasOfCoordinates[grid[y][x]] =
+          (areasOfCoordinates[grid[y][x]] || 0) + 1;
+      } else {
+        const closest = getClosests(coordinates, x, y);
+        if (closest.length === 1) {
+          areasOfCoordinates[closest[0]] =
+            (areasOfCoordinates[closest[0]] || 0) + 1;
+          grid[y][x] = closest[0].toLowerCase();
+        } else {
+          grid[y][x] = ".";
+        }
+      }
+      if (
+        grid[y][x] !== "." &&
+        (x === minX || x === maxX || y === maxY || y === minY)
+      ) {
+        hasInfiniteArea.delete(grid[y][x].toUpperCase());
+      }
     }
   }
-
+  const largestFiniteArea = Math.max(
+    ...[...hasInfiniteArea.keys()].map(k => areasOfCoordinates[k])
+  );
   return {
     grid,
-    coordinates
+    coordinates,
+    largestFiniteArea
   };
 }
 
-export function fillClosests(grid: Grid, coordinates: Coordinates): Grid {
-  const width = grid[0].length - 1;
-  const height = grid.length - 1;
-  for (let y = 0; y <= height; y++) {
-    for (let x = 0; x <= width; x++) {
-      if (grid[y] === undefined) {
-        grid[y] = [];
-      }
-      grid[y][x] = grid[y][x] || ".";
-      if (grid[y][x] === ".") {
-        let closests = getClosests(coordinates, x, y);
-        grid[y][x] = closests.length === 1 ? closests[0].toLowerCase() : ".";
-      }
-    }
-  }
-  return grid;
+export function getLargestFiniteArea(input: string): number {
+  return fillGridWithCoordinates(input).largestFiniteArea;
 }

@@ -1,23 +1,23 @@
-import { setCoorditates, getClosests, fillClosests } from "./";
+import { fillGridWithCoordinates, getClosests, getLargestFiniteArea } from "./";
 
 test("examples", () => {
-  const { grid, coordinates } = setCoorditates(`1, 1
+  const { grid, coordinates } = fillGridWithCoordinates(`1, 1
 1, 6
 8, 3
 3, 4
 5, 5
 8, 9`);
 
-  expect(grid.map(r => r.join("")).join("\n")).toBe(`..........
-.A........
-..........
-........C.
-...D......
-.....E....
-.B........
-..........
-..........
-........F.`);
+  expect(grid.map(r => r.join("")).join("\n")).toBe(`aaaaa.cccc
+aAaaa.cccc
+aaaddecccc
+aadddeccCc
+..dDdeeccc
+bb.deEeecc
+bBb.eeee..
+bbb.eeefff
+bbb.eeffff
+bbb.ffffFf`);
 
   expect(getClosests(coordinates, 0, 0)).toEqual(["A"]);
   expect(getClosests(coordinates, 1, 0)).toEqual(["A"]);
@@ -28,17 +28,11 @@ test("examples", () => {
   expect(getClosests(coordinates, 0, 4)).toEqual(["B", "D"]);
 
   expect(
-    fillClosests(grid, coordinates)
-      .map(r => r.join(""))
-      .join("\n")
-  ).toBe(`aaaaa.cccc
-aAaaa.cccc
-aaaddecccc
-aadddeccCc
-..dDdeeccc
-bb.deEeecc
-bBb.eeee..
-bbb.eeefff
-bbb.eeffff
-bbb.ffffFf`);
+    getLargestFiniteArea(`1, 1
+1, 6
+8, 3
+3, 4
+5, 5
+8, 9`)
+  ).toEqual(17);
 });
